@@ -10,8 +10,7 @@ class SbrOddsProvider:
 
     def __init__(self, sportsbook="fanduel"):
         try:
-            scoreboard = Scoreboard(sport="NBA")
-        self.games = scoreboard.games if scoreboard else []
+            scoreboard = Scoreboard(sport="NBA").games
         except AttributeError:
             self.games = []
         self.sportsbook = sportsbook
