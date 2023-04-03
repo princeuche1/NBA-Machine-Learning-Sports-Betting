@@ -58,8 +58,23 @@ def createTodaysGames(games, df, odds):
 
 def main():
     odds = None
+    if args.odds:
+        odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
+        games = create_todays_games_from_odds(odds)
+        if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
+            print(games[0][0]+':'+games[0][1])
+            print(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
+            print(Style.RESET_ALL)
+            odds = None
+        else:
+            print(f"------------------{args.odds} odds data------------------")
+            for g in odds.keys():
+                home_team, away_team = g.split(":")
+                print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
+    else:
+        data = get_todays_games_json(todays_games_url)
+        games = create_todays_games(data)
     data = get_json_data(data_url)
-    games = create_todays_games(data)
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)
     if args.nn:
