@@ -103,4 +103,5 @@ if __name__ == "__main__":
     parser.add_argument('-A', action='store_true', help='Run all Models')
     parser.add_argument('-odds', help='Sportsbook to fetch from. (fanduel, draftkings, betmgm, pointsbet, caesars, wynn, bet_rivers_ny')
     args = parser.parse_args()
+    odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
     main()
