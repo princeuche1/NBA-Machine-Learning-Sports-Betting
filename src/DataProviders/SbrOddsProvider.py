@@ -39,7 +39,7 @@ class SbrOddsProvider:
                 totals_value = game['total'][self.sportsbook]
             
             # use pandas.Index with appropriate dtype instead of pandas.Int64Index
-            index = Int64Index([home_team_name, away_team_name], dtype='int64', errors='ignore')
+            index = pd.Int64Index([home_team_name, away_team_name], dtype='int64', errors='ignore')
             
             dict_res[index] = { 
                 'under_over_odds': totals_value,
