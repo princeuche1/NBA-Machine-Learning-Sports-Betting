@@ -13,6 +13,7 @@ class SbrOddsProvider:
             scoreboard = Scoreboard(sport="NBA")
         self.games = scoreboard.games if scoreboard else []
         except AttributeError:
+            self.games = []
         self.sportsbook = sportsbook
 
     
