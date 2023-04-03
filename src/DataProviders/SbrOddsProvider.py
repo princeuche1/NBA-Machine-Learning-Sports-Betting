@@ -38,7 +38,10 @@ class SbrOddsProvider:
             if self.sportsbook in game['total']:
                 totals_value = game['total'][self.sportsbook]
             
-            dict_res[home_team_name + ':' + away_team_name] =  { 
+            # use pandas.Index with appropriate dtype instead of pandas.Int64Index
+            index = pd.Index([home_team_name, away_team_name], dtype='object')
+            
+            dict_res[index] = { 
                 'under_over_odds': totals_value,
                 home_team_name: { 'money_line_odds': money_line_home_value }, 
                 away_team_name: { 'money_line_odds': money_line_away_value }
