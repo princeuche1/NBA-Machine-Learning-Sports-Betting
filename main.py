@@ -49,7 +49,7 @@ def createTodaysGames(games, df, odds):
     games_data_frame = pd.concat(match_data, ignore_index=True, axis=1)
     games_data_frame = games_data_frame.T
 
-    frame_ml = games_data_frame.drop(columns=['TEAM_ID', 'CFID', 'CFPARAMS', 'TEAM_NAME'], errors='ignore')
+    frame_ml = games_data_frame.drop(columns=['TEAM_ID', 'CFID', 'CFPARAMS', 'TEAM_NAME'])
     data = frame_ml.values
     data = data.astype(float)
 
@@ -59,7 +59,18 @@ def createTodaysGames(games, df, odds):
 def main():
     odds = None
     if args.odds:
-        odds = None
+        odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
+        games = create_todays_games_from_odds(odds)
+        if((games[0][0]+':'+games[0][1]) not in list(odds.keys())):
+            print(games[0][0]+':'+games[0][1])
+            print(Fore.RED, "--------------Games list not up to date for todays games!!! Scraping disabled until list is updated.--------------")
+            print(Style.RESET_ALL)
+            odds = None
+        else:
+            print(f"------------------{args.odds} odds data------------------")
+            for g in odds.keys():
+                home_team, away_team = g.split(":")
+                print(f"{away_team} ({odds[g][away_team]['money_line_odds']}) @ {home_team} ({odds[g][home_team]['money_line_odds']})")
     else:
         data = get_todays_games_json(todays_games_url)
         games = create_todays_games(data)
@@ -92,5 +103,4 @@ if __name__ == "__main__":
     parser.add_argument('-A', action='store_true', help='Run all Models')
     parser.add_argument('-odds', help='Sportsbook to fetch from. (fanduel, draftkings, betmgm, pointsbet, caesars, wynn, bet_rivers_ny')
     args = parser.parse_args()
-    odds = SbrOddsProvider(sportsbook=args.odds).get_odds()
     main()
