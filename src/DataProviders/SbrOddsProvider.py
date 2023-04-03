@@ -9,11 +9,9 @@ class SbrOddsProvider:
     """    
 
     def __init__(self, sportsbook="fanduel"):
-        try:
-            scoreboard = Scoreboard(sport="NBA").games
-        except AttributeError:
-            self.games = []
-        self.sportsbook = sportsbook
+        
+       self.games = Scoreboard(sport="NBA").games
+       self.sportsbook = sportsbook
 
     
     def get_odds(self):
@@ -40,10 +38,7 @@ class SbrOddsProvider:
             if self.sportsbook in game['total']:
                 totals_value = game['total'][self.sportsbook]
             
-            # use pandas.Index with appropriate dtype instead of pandas.Int64Index
-            index = pd.Int64Index([home_team_name, away_team_name], dtype='int64', errors='ignore')
-            
-            dict_res[index] = { 
+            dict_res[home_team_name + ':' + away_team_name] =  { 
                 'under_over_odds': totals_value,
                 home_team_name: { 'money_line_odds': money_line_home_value }, 
                 away_team_name: { 'money_line_odds': money_line_away_value }
