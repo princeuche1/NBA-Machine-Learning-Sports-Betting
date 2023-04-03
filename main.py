@@ -58,8 +58,8 @@ def createTodaysGames(games, df, odds):
 
 def main():
     odds = None
-    games = create_todays_games(data)
     data = get_json_data(data_url)
+    games = create_todays_games(data)
     df = to_data_frame(data)
     data, todays_games_uo, frame_ml, home_team_odds, away_team_odds = createTodaysGames(games, df, odds)
     if args.nn:
