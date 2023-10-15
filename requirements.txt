@@ -1,6 +1,6 @@
 requests==2.25.1
 tqdm==4.59.0
-colorama==0.4.4
+colorama==0.4.6
 pandas
 numpy
 scikit_learn==1.0
