@@ -1,6 +1,4 @@
 import argparse
-#import colorama
-#from colorama import Fore, Style
 import pandas as pd
 import tensorflow as tf
 from src.Predict import NN_Runner, XGBoost_Runner
